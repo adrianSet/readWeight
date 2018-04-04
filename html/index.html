@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="html/js/jquery-3.3.1.min.js"></script>
+    <title>layout</title>
+</head>
+<body>
+    <div>
+        <input id="listener" type="text" placeholder="透析编号"></input>
+    </div>
+    <div>
+        <label>姓名</label>
+        <label id="name">:</label>
+    </div>
+    <div>
+        <label>体重1</label>
+    </div>
+    <div>
+        <label>体重2</label>
+    </div>
+    <div>
+        <label>体重3</label>
+    </div>
+
+</body>
+
+<script>
+    $(function () {
+        $("#listener").keydown(function (event) {
+            if(event.keyCode==13){
+                var value  = $("#listener").val()
+                console.log(value)
+                $.get('/getPatientInfo',{id:value},function(data){
+                    $("#name").html(data.result[0].dutyNurseName)
+
+                },'json')
+
+            }
+
+        })
+    })
+
+</script>
+</html>
