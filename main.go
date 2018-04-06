@@ -4,27 +4,36 @@ import (
 	"net/http"
 	"log"
 	"fmt"
-	"strings"
 	"html/template"
 	"readWeight/config"
 	"io/ioutil"
+   ."readWeight/log1"
 )
 var (
 	patientInfoUrl = config.M["host"]+config.M["patient_info_url"]
 )
 
-func sayhelloName(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm() //解析参数，默认是不会解析的
-	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
-	fmt.Println("path", r.URL.Path)
-	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Println(r.Form["url_long"])
-	for k, v := range r.Form {
-		fmt.Println("key:", k)
-		fmt.Println("val:", strings.Join(v, ""))
-	}
-	fmt.Fprintf(w, "Hello Wrold!") //这个写入到w的是输出到客户端的
+
+func init(){
+
+
 }
+
+
+
+
+//func sayhelloName(w http.ResponseWriter, r *http.Request) {
+//	r.ParseForm() //解析参数，默认是不会解析的
+//	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
+//	fmt.Println("path", r.URL.Path)
+//	fmt.Println("scheme", r.URL.Scheme)
+//	fmt.Println(r.Form["url_long"])
+//	for k, v := range r.Form {
+//		fmt.Println("key:", k)
+//		fmt.Println("val:", strings.Join(v, ""))
+//	}
+//	fmt.Fprintf(w, "Hello Wrold!") //这个写入到w的是输出到客户端的
+//}
 
 func index(w http.ResponseWriter, r *http.Request){
 	tmp, err := template.ParseFiles("html/index.html")
@@ -52,6 +61,7 @@ func getPatientInfo(w http.ResponseWriter, r *http.Request){
 
 
 func main(){
+	Logger.Println("************服务开始启动***************")
 	//设置访问的路由
 	http.HandleFunc("/", index)
 	http.HandleFunc("/getPatientInfo", getPatientInfo)

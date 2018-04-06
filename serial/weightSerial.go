@@ -5,6 +5,7 @@ import (
 	"log"
 	"readWeight/config"
 	"runtime/debug"
+	"time"
 )
 
 /**
@@ -34,5 +35,6 @@ func Listening() {
 		string1 := string(buf)
 		log.Printf("%q", buf[:n])
 		log.Println(string1)
+		time.Sleep(time.Second)
 	}
 }
