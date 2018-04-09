@@ -1,45 +1,446 @@
 <!DOCTYPE html>
+<html lang="en">
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script src="html/js/jquery-3.3.1.min.js"></script>
-    <title>layout</title>
-</head>
-<body>
-    <div>
-        <input id="listener" type="text" placeholder="透析编号"></input>
-    </div>
-    <div>
-        <label>姓名</label>
-        <label id="name">:</label>
-    </div>
-    <div>
-        <label>体重1</label>
-    </div>
-    <div>
-        <label>体重2</label>
-    </div>
-    <div>
-        <label>体重3</label>
-    </div>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+			<link rel="stylesheet" href="html/css/animate.min.css" />
+		<title></title>
+		<style>
+			body{
+				padding: 0;
+				margin: 0;
+				border: 0;
+				background-image: url(html/img/bg.jpg);
+				background-size: cover;
+				background-repeat:no-repeat;
+				color: #fff;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				font-size: 36px;
+				font-family: "微软雅黑", "黑体";
+				letter-spacing: 5px;
+			}
+			p{
+				margin: 0;
+				padding: 0;
+			}
+			.main{
+				padding: 40px 120px;
+				height: 100%;
+			}
+			.users{
+				overflow: hidden;
+				line-height: 90px;
+			}
+			.users .name{
+				font-size: 90px;
+				color: #89f7fe;
+				line-height: 120px;
+				letter-spacing: 20px;
+				padding-top: 80px;
+			}
+			.users .code{
+				font-size: 42px;
+				border-bottom: 1px solid #91c9ff;
+				
+			}
+			.users .code font{
+				display: inline-block;
+				margin-right: 50px;
+			}
+			.users .next{
+				font-size: 49px;
+			}
+			.users .next b{
+				color: #8cc63f;
+				font-weight:normal;
+			}
+			.users .next font{
+				color: #8cc63f;
+				display: inline-block;
+				margin-left: 50px;
+			}
+			.left{
+				float: left;
+				width: 65%;
+			}
+			.right{
+				    float: right;
+			    width: 500px;
+			    height: 500px;
+			    z-index: 100;
+			    position: absolute;
+			    right: 120px;
+			}
+			
+			
+			.histry{
+				margin-top: -50px;
+				padding-top: 150px;
+				width: 100%;
+			}
+			.histry .table{
+				width: 100%;
+				border-top: 1px solid #91c9ff;
+				border-left: 1px solid #91c9ff;
+				border-right: 1px solid #91c9ff;
+			}
+			.histry .table p{
+				border-bottom: 1px solid #91c9ff;
+				line-height: 80px;
+				display: flex;
+				flex-direction: row ;
+				 flex-wrap: nowrap;
+				justify-content: space-between;
+			}
+			.histry .table p span:first-of-type{
+				width: 29%;
+			}
+			.histry .table span{
+				display:block;
+				text-align: left;
+				width: 17%;
+				padding: 0 2.5%;
+			}
+			.histry .title span{
+				display: inline-block;
+				background-color: #8cc63f;
+				padding: 5px 50px;
+			}
+			#HBox{
+				width: 600px;
+				height: 530px;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-top: -265px;
+				margin-left: -300px;
+				display: none;
+				z-index: 9999999;
+			}
+			.titlogo{
+				width: 100%;
+				background-color: #fff;
+				width: 500px;
+				margin: 0 auto;
+			    position: absolute;
+			    text-align: center;
+			    margin-left: 50px;
+			    height: 200px;
+			}
+			.titlogo img{
+				height: 100px;
+				margin-top: 50px;
+			}
+			.boxMins{
+				background-color: #c33d4f;
+				width: 100%;
+				height: 480px;
+				overflow: hidden;
+				margin-top: 50px;
+			}
+			.boxMins p:first-of-type{
+				border-bottom: 1px dashed #fff;
+			    text-align: center;
+			    width: 70%;
+			    margin: 0 auto;
+			    margin-top: 180px;
+			    font-size: 52px;
+			    height: 100px;
+			    line-height: 100px;
+			}
+			.boxMins p:last-of-type{
+				text-align: center;
+			    font-size: 36px;
+			    width: 70%;
+			    margin: 20px auto;
+			}
+			
+			
+			svg{
+				width: 100%;
+				height: 100%;
+				background-image: url(html/img/weighBg.png);
+			}
+			#text1{
+				font-size: 120px;
+				margin-left: -125px;
+				font-weight: normal;
+			}
+			
+			/*#progress { 
+			  stroke-dasharray: 544px;
+			  stroke-dashoffset: 544px;}*/
+			/*#progress {
+			  stroke-dasharray: 100px;
+			  stroke-dashoffset: 100px;
+			  animation: progressAnimation 600ms linear infinite;}
+			  @keyframes progressAnimation {
+			  from {
+			    stroke-dashoffset: 100px;
+			  }
+			  to {
+			    stroke-dashoffset: 300px;
+			  }}*/
+			
+			#progress {
+			    stroke-dasharray:200 1477;
+			    /*stroke-dashoffset: 100%;*/
+			    /*animation: donut 800ms 200ms cubic-bezier(0.99, 0.01, 0.22, 0.94) forwards;*/
+			}
+			/*/*@keyframes donut {
+			    from {
+			        stroke-dashoffset: 100%;
+			    }
+			    to {
+			        stroke-dashoffset: 10%;
+			    }
+			}*/*/
+			
+		</style>
+		<script src="html/js/jquery3.2.1.min.js"></script>
+		<!--<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery.hDialog.js"></script>-->
+	</head>
+	<body>
+		<div class="main">
+			<div class="users">
+			   <div class="left">
+			   	   <p class="name">---</p>
+			   	   <p class="code">
+			   	   	    <font>00000000000</font>
+			   	   	    <font>--</font>
+			   	   	    <font>0kg</font>
+			   	   </p>
+			   	   <p class="next">
+			   	   	    下次透析时间<b>----</b>年<b>--</b>月<b>--</b>日<font>--</font>
+			   	   </p>
+			   </div>
+			   <div class="right">
+			   	    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-</body>
+  <text x="50%" y="280" stroke="none" dx="-160" id="text1" fill="#91c9ff">00.00</text>
+    <text x="74%" stroke="none" fill="#8cc63f" y="330" id="text2" >kg</text>
+  <circle  stroke="#659bd6"  fill="url('html/img/weighBg.png')" stroke-width="2" cx="250" cy="250"  r="235"/>
+  <circle  stroke="#8cc63f"  fill="none" stroke-width="8" cx="250" cy="250"  transform="matrix(0,-1,1,0,0,500)" id="progress" r="235"/>
 
-<script>
-    $(function () {
-        $("#listener").keydown(function (event) {
-            if(event.keyCode==13){
-                var value  = $("#listener").val()
-                console.log(value)
-                $.get('/getPatientInfo',{id:value},function(data){
-                    $("#name").html(data.result[0].dutyNurseName)
-
-                },'json')
-
-            }
-
-        })
-    })
-
-</script>
+			   	    </svg>
+			   </div>
+			</div>
+			<div class="histry">	
+				<p class="title"><span>历史记录</span></p>
+				<div class="table">
+				<p>
+					<span>日期</span>
+					<span>透前重</span>
+					<span>透后重</span>
+					<span>衣物重</span>
+				</p>
+				<p class="tablep">
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+				</p>
+				<p class="tablep">
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+				</p>
+				<p class="tablep">
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+					<span>-</span>
+				</p>
+				</div>
+			</div>
+		</div>
+		<audio src="html/img/6894.mp3" id="audio1" preload="auto"></audio>
+		<input  type="text" id="codeDrive"  style="display: block; margin-left: -1000px;" />
+		<a class="bounceInUp dialog" style="display: none;"></a>
+		<div id="HBox" class="animated" style="">
+               <div class="titlogo">
+               	<img src="html/img/erro.png" />
+               </div>
+               <div class="boxMins">
+               	<p>错误信息</p>
+               	<p id="erromessage"></p>
+               </div>
+		</div><!-- HBox end -->	
+	</body>
 </html>
+<script>
+	//20171208033
+	var flag=true;
+	var host="/"
+	
+	
+	function loadUser(code){
+		$.post(host+"getPatientInfo",{dialysisCode:code},function(data){
+			console.log(data);
+			if(data.code==666){
+			var r=data.result.patientClassPlan,h=data.result.dialysisProcessHistoryList;
+			$(".name").text(r.patientName);
+			$(".code font").eq(0).text(code);
+			$(".code font").eq(1).text(r.dialysisModeName);
+			$(".code font").eq(2).text("0kg");
+			$(".next").html("下次透析时间<b>"+r.dialysisDate.split("-")[0]+
+			                            "</b>年<b>"+r.dialysisDate.split("-")[1]+
+			                            "</b>月<b>"+r.dialysisDate.split("-")[2]+
+			                            "</b>日<font>"+r.className+"</font>")
+			loadWeigh();
+			showList(h);
+			}
+			else{
+				$(".tablep span").text("-");
+				$(".name").text("---");
+				$(".code font").eq(0).text("00000000000");
+				$(".code font").eq(1).text("--");
+				$(".code font").eq(2).text("0kg");
+				$(".next").html("下次透析时间<b>----</b>年<b>--</b>月<b>--</b>日<font>--</font>");
+				$("#erromessage").text(data.message);
+				dialogIn();
+			}
+			
+		},"JSON")
+	}
+	
+	function loadWeigh(){
+		$.post(host+"breathe","",function(data){
+			console.log(data)
+			if(data<=0){
+				$("#text1").html("00.00");
+        		$("#progress").css('stroke-dasharray', 0 + " 1477");
+        		setTimeout(function(){
+        			loadWeigh();
+        		},100)
+        		
+			}
+			else{
+				weighOk(data,0)
+				
+			}
+		},"JSON")
+	}
+	function showList(list){
+		$(".tablep span").text("-");
+		for(i=0;i<list.length;i++){
+			$(".tablep").eq(i).find("span").eq(0).text(list[i].dialysisDate);
+			$(".tablep").eq(i).find("span").eq(1).text(list[i].dialysisPreWeight.preBodyWeight+"kg");
+			$(".tablep").eq(i).find("span").eq(2).text(list[i].dialysisPreWeight.preBodyWeight+"kg");
+			$(".tablep").eq(i).find("span").eq(3).text(list[i].dialysisPreWeight.clothesWeight+"kg");
+		}
+	}
+	
+	function weighOk(value,a){
+			if(a>=value) a=value;	
+        	var text=a.toFixed(2).toString();
+        	console.log(text);
+        	text="00"+text;
+        	text=text.substring(text.length-5)
+        	$("#text1").html(text);
+        	setTimeout(function(){
+        		
+        		var ss=parseFloat(a)/100;
+        		$("#progress").css('stroke-dasharray', 1477 * ss + " 1477");
+        		a=parseFloat(a)+0.539;
+        		if(a>=value) {
+        			$(".code font").eq(2).text(value+"kg");
+        			finished();
+        			return;
+        		}
+        		weighOk(value,a);
+        	},1)
+        	
+    }
+	function finished(){
+		$.post(host+"finished","",function(data){
+			
+			if(data.code==666||data.code==777){
+				$("#audio1")[0].play();
+			}
+			else{
+				$("#erromessage").text(data.message);
+				dialogIn();
+			}
+			setTimeout(function(){
+				flag=true;
+			},1000)
+		},"json")
+	}
+
+	
+	
+	
+	
+	
+		function dialogOut(){
+				$('#HBox').addClass('fadeOutUp');
+				setTimeout(function(){
+					$('#HBox').removeClass('fadeOutUp');
+					$('#HBox').hide();
+				},500)
+		}
+		function dialogIn(){
+				$('#HBox').addClass('bounceInUp');
+				$('#HBox').show();
+				setTimeout(function(){
+					$('#HBox').removeClass('bounceInUp');
+					close();
+				},500)
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$(function() {
+//		dialogIn()
+		
+		
+		$("#codeDrive").focus();
+		$("#codeDrive").blur(function(){
+			$("#codeDrive").focus();
+		})
+		$("#codeDrive").keydown(function(){
+			if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
+				if(flag){
+					var code=$("#codeDrive").val();
+					$("#codeDrive").val("");
+					$("#codeDrive").focus();
+					flag=false;
+					if($("#HBox").is(":hidden")){
+						loadUser(code)
+					}
+					else{
+						dialogOut();
+						loadUser(code);
+					}
+				}
+				else{
+					$("#codeDrive").val("");
+					$("#codeDrive").focus();
+				}
+	            
+	        }
+		})
+
+   })
+	
+	
+	
+	
+	
+	
+
+	
+	
+</script>

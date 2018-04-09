@@ -22,7 +22,6 @@ const (
 func init() {
 	flag.Parse()
 	parseIni()
-
 }
 
 func parseIni() {
