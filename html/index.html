@@ -186,7 +186,7 @@
 			  }}*/
 			
 			#progress {
-			    stroke-dasharray:200 1477;
+			    stroke-dasharray:0 1477;
 			    /*stroke-dashoffset: 100%;*/
 			    /*animation: donut 800ms 200ms cubic-bezier(0.99, 0.01, 0.22, 0.94) forwards;*/
 			}
@@ -259,12 +259,12 @@
 				</div>
 			</div>
 		</div>
-		<audio src="html/img/6894.mp3" id="audio1" preload="auto"></audio>
+		<audio src="img/6894.mp3" id="audio1" preload="auto"></audio>
 		<input  type="text" id="codeDrive"  style="display: block; margin-left: -1000px;" />
 		<a class="bounceInUp dialog" style="display: none;"></a>
 		<div id="HBox" class="animated" style="">
                <div class="titlogo">
-               	<img src="html/img/erro.png" />
+               	<img src="img/erro.png" /> 
                </div>
                <div class="boxMins">
                	<p>错误信息</p>
@@ -286,7 +286,7 @@
 			var r=data.result.patientClassPlan,h=data.result.dialysisProcessHistoryList;
 			$(".name").text(r.patientName);
 			$(".code font").eq(0).text(code);
-			$(".code font").eq(1).text(r.dialysisModeName);
+			$(".code font").eq(1).text(data.result.dialysisModeName);
 			$(".code font").eq(2).text("0kg");
 			$(".next").html("下次透析时间<b>"+r.dialysisDate.split("-")[0]+
 			                            "</b>年<b>"+r.dialysisDate.split("-")[1]+
@@ -331,7 +331,7 @@
 		for(i=0;i<list.length;i++){
 			$(".tablep").eq(i).find("span").eq(0).text(list[i].dialysisDate);
 			$(".tablep").eq(i).find("span").eq(1).text(list[i].dialysisPreWeight.preBodyWeight+"kg");
-			$(".tablep").eq(i).find("span").eq(2).text(list[i].dialysisPreWeight.preBodyWeight+"kg");
+			$(".tablep").eq(i).find("span").eq(2).text((!list[i].dialysisPostWeight?0:list[i].dialysisPostWeight.postBodyWeight)+"kg");
 			$(".tablep").eq(i).find("span").eq(3).text(list[i].dialysisPreWeight.clothesWeight+"kg");
 		}
 	}
@@ -344,15 +344,14 @@
         	text=text.substring(text.length-5)
         	$("#text1").html(text);
         	setTimeout(function(){
-        		
         		var ss=parseFloat(a)/100;
         		$("#progress").css('stroke-dasharray', 1477 * ss + " 1477");
-        		a=parseFloat(a)+0.539;
         		if(a>=value) {
-        			$(".code font").eq(2).text(value+"kg");
+        			$(".code font").eq(2).text(value.toFixed(2)+"kg");
         			finished();
         			return;
         		}
+        		a=parseFloat(a)+0.539;
         		weighOk(value,a);
         	},1)
         	

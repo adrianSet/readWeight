@@ -71,8 +71,8 @@ func getPatientInfo(w http.ResponseWriter, r *http.Request) {
 呼吸事件
  */
 func breathe(w http.ResponseWriter, r *http.Request) {
-	if cache.Weight!=0{
-		fmt.Fprint(w,cache.Weight)
+	if cache.Upload.PreBodyWeight!=0{
+		fmt.Fprint(w,cache.Upload.PreBodyWeight)
 	}else{
 		fmt.Fprint(w,0)
 	}
@@ -96,6 +96,7 @@ func finished(w http.ResponseWriter, r *http.Request){
 		Logger.Println(err)
 	}
 	defer resp.Body.Close()
+	defer func(){signWeight<-1}()
 	body, err := ioutil.ReadAll(resp.Body)
 	json := string(body)
 	fmt.Fprint(w,json)
@@ -121,15 +122,15 @@ func parseJsonOfPatientInfo(jsonstr string) {
 	}
 
 }
-
+var signWeight = make(chan int)
 func main() {
 	Logger.Println("************服务开始启动***************")
 	rand.Seed(time.Now().Unix())
 	go func(){
 		for{
 			a:=rand.Int31n(100)
-			cache.Weight=float32(a)
-			time.Sleep(time.Millisecond*100)
+			cache.Upload.PreBodyWeight=float64(a)
+			<-signWeight
 		}
 
 
