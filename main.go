@@ -12,8 +12,7 @@ import (
 	"readWeight/cache"
 	"net/url"
 	"strconv"
-	"math/rand"
-	"time"
+	"readWeight/serial"
 )
 
 var (
@@ -50,9 +49,16 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func initScaleWeight(){
+	cache.ResetCache()
+	serial.Flag=1
+
+}
+
 func getPatientInfo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
-	//cache.ResetCache()
+	//称重初始化
+	initScaleWeight()
 	dialysisCode := r.FormValue("dialysisCode")
 	resp, err := http.Get(patientInfoUrl + "?dialysisCode=" + dialysisCode)
 	if err != nil {
@@ -91,17 +97,14 @@ func finished(w http.ResponseWriter, r *http.Request){
 
 	resp,err:=http.PostForm(uploadWeightUrl,data)
 	//重置
-	//cache.ResetCache()
+	cache.ResetCache()
 	if err!=nil {
 		Logger.Println(err)
 	}
 	defer resp.Body.Close()
-	defer func(){signWeight<-1}()
 	body, err := ioutil.ReadAll(resp.Body)
 	json := string(body)
 	fmt.Fprint(w,json)
-
-
 }
 //**********************private method **********************************
 
@@ -122,19 +125,11 @@ func parseJsonOfPatientInfo(jsonstr string) {
 	}
 
 }
-var signWeight = make(chan int)
 func main() {
 	Logger.Println("************服务开始启动***************")
-	rand.Seed(time.Now().Unix())
-	go func(){
-		for{
-			a:=rand.Int31n(100)
-			cache.Upload.PreBodyWeight=float64(a)
-			<-signWeight
-		}
+	//称重协程启动
+	go serial.Listening()
 
-
-	}()
 	//设置访问的路由
 
 	//获取病人信息

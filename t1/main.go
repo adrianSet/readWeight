@@ -39,13 +39,11 @@ func readSerial() {
 			if isStability {
 				Logger.Printf("连续%d次 成功获取稳定体重%dkg", t.continueSameWeightFlag, w)
 				t = temp{0, make([]int, 50), 0}
-				cache.Weight = float32(w)
+				cache.Upload.PreBodyWeight = float64(w)
 				Flag = 0
-
 			}
 
 		}
-
 		time.Sleep(time.Second)
 	}
 }
@@ -72,5 +70,4 @@ func continueSameWeight(w int) bool {
 		return true
 	}
 	return false
-
 }
